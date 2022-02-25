@@ -11,7 +11,7 @@ namespace SamuraiApp.UI
         private static SamuraiContext _context = new SamuraiContext();
         static void Main(string[] args)
         {
-            AddSamurais("Julie", "Sampson");
+            AddSamurais("Julie3", "Sampson3");
             GetSamurais();
             Console.WriteLine("Press any key...");
             Console.ReadKey();

@@ -11,11 +11,10 @@ namespace SamuraiApp.UI
         private static SamuraiContext _context = new SamuraiContext();
         private static void Main(string[] args)
         {
-            AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
-            //GetSamurais();
-            AddVariousTypes();
-            Console.WriteLine("Press any key...");
-            Console.ReadKey();
+            //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
+            ////GetSamurais();
+            //AddVariousTypes();
+            QueryFilters();
         }
         private static void AddVariousTypes()
         {
@@ -35,7 +34,7 @@ namespace SamuraiApp.UI
             }
             _context.SaveChanges();
         }
-          private static void GetSamurais()
+        private static void GetSamurais()
         {
             var samurais = _context.Samurais
                .TagWith("ConsoleApp.Program.GetSamurais method")
@@ -45,6 +44,14 @@ namespace SamuraiApp.UI
             {
                 Console.WriteLine(samurai.Name);
             }
+        }
+        private static void QueryFilters()
+        {
+            //    var name = "Sampson";
+            //    var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList();
+                var filter = "J%";
+                var samurais = _context.Samurais
+                    .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
         }
     }
 }

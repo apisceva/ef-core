@@ -15,7 +15,10 @@ namespace SamuraiApp.UI
             ////GetSamurais();
             //AddVariousTypes();
             //QueryFilters();
-            QueryAggregates();
+            //QueryAggregates();
+            //RetrieveAndUpdateSamurai();
+            //RetrieveAndUpdateMultipleSamurais();
+            MultipleDatabaseOperations();
         }
         private static void AddVariousTypes()
         {
@@ -25,7 +28,7 @@ namespace SamuraiApp.UI
                     new Battle { Name = "Battle of Nagashino" });
             _context.SaveChanges();
         }
-       
+
         private static void AddSamuraisByName(params string[] names)
         {
             foreach (string name in names)
@@ -50,15 +53,34 @@ namespace SamuraiApp.UI
         {
             //    var name = "Sampson";
             //    var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList();
-                var filter = "J%";
-                var samurais = _context.Samurais
-                    .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
+            var filter = "J%";
+            var samurais = _context.Samurais
+                .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
         }
-    private static void QueryAggregates()
+        private static void QueryAggregates()
         {
             //var name = "Sampson";
             //var samurai = _context.Samurais.FirstOrDefault(s => s.Name == name);
             var samurai = _context.Samurais.Find(2);
+        }
+        private static void RetrieveAndUpdateSamurai()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name += "San";
+            _context.SaveChanges();
+        }
+        private static void RetrieveAndUpdateMultipleSamurais()
+        {
+            var samurais = _context.Samurais.Skip(1).Take(4).ToList();
+            samurais.ForEach(s => s.Name += "San");
+            _context.SaveChanges();
+        }
+        private static void MultipleDatabaseOperations()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name += "San";
+            _context.Samurais.Add(new Samurai { Name = "Shino" });
+            _context.SaveChanges();
         }
     }
 }

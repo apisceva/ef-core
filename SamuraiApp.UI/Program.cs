@@ -14,7 +14,8 @@ namespace SamuraiApp.UI
             //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
             ////GetSamurais();
             //AddVariousTypes();
-            QueryFilters();
+            //QueryFilters();
+            QueryAggregates();
         }
         private static void AddVariousTypes()
         {
@@ -52,6 +53,12 @@ namespace SamuraiApp.UI
                 var filter = "J%";
                 var samurais = _context.Samurais
                     .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
+        }
+    private static void QueryAggregates()
+        {
+            //var name = "Sampson";
+            //var samurai = _context.Samurais.FirstOrDefault(s => s.Name == name);
+            var samurai = _context.Samurais.Find(2);
         }
     }
 }

@@ -14,10 +14,10 @@ namespace SamuraiApp.UI
         private static void Main(string[] args)
         {
             //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
-            GetSamurais();
-            //AddVariousTypes();
-            QueryFilters();
-            QueryAggregates();
+            //GetSamurais();
+            ////AddVariousTypes();
+            //QueryFilters();
+            //QueryAggregates();
             //RetrieveAndUpdateSamurai();
             //RetrieveAndUpdateMultipleSamurais();
             //MultipleDatabaseOperations();
@@ -27,7 +27,8 @@ namespace SamuraiApp.UI
             //InsertNewSamuraiWithManyQuotes();
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked(1);
-            Simpler_AddQuoteToExistingSamuraiNotTracked(2);
+            //Simpler_AddQuoteToExistingSamuraiNotTracked(2);
+            EagerLoadSamuraiWithQuotes();
 
         }
         private static void AddVariousTypes()
@@ -174,6 +175,17 @@ namespace SamuraiApp.UI
             using var newContext = new SamuraiContext();
             newContext.Quotes.Add(quote);
             newContext.SaveChanges();
+        }
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            //var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList()
+            //;
+            //var splitQuery = _context.Samurais.AsSplitQuery().Include(s => s.Quotes).ToList();
+            //var filteredInclude = _context.Samurais
+            //    .Include(s => s.Quotes.Where(q => q.Text.Contains("Thanks"))).ToList();
+            var filterPrimaryEntityWithInclude =
+                _context.Samurais.Where(s => s.Name.Contains("Sampson"))
+                .Include(s => s.Quotes).FirstOrDefault();
         }
     }
 

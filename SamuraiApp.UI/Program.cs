@@ -28,8 +28,9 @@ namespace SamuraiApp.UI
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked(1);
             //Simpler_AddQuoteToExistingSamuraiNotTracked(2);
-            EagerLoadSamuraiWithQuotes();
-
+            //EagerLoadSamuraiWithQuotes();
+            //ProjectSomeProperties();
+            ProjectSamuraisWithQuotes();
         }
         private static void AddVariousTypes()
         {
@@ -186,6 +187,39 @@ namespace SamuraiApp.UI
             var filterPrimaryEntityWithInclude =
                 _context.Samurais.Where(s => s.Name.Contains("Sampson"))
                 .Include(s => s.Quotes).FirstOrDefault();
+        }
+        private static void ProjectSomeProperties()
+        {
+            var someProperties = _context.Samurais.Select(s => new { s.Id, s.Name }).ToList();
+            var idAndNames = _context.Samurais.Select(s => new IdAndName(s.Id, s.Name)).ToList();
+        }
+        public struct IdAndName
+        {
+            public IdAndName(int id, string name)
+            {
+                Id = id;
+                Name = name;
+            }
+            public int Id;
+            public string Name;
+        }
+        private static void ProjectSamuraisWithQuotes()
+        {
+            //var somePropWithQuotes = _context.Samurais
+            //    .Select(s => new { s.Id, s.Name, NumberOfQuotes=s.Quotes.Count })
+            //    .ToList();
+            //var somePropWithQuotes = _context.Samurais
+            //    .Select(s => new {s.Id,s.Name,
+            //                      HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy"))})
+            //    .ToList();
+            var samuraisAndQuotes = _context.Samurais
+                .Select(s => new
+                {
+                    Samurai = s,
+                    HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy"))
+                })
+                .ToList();
+            var firstsamurai = samuraisAndQuotes[0].Samurai.Name += "The Happiest";
         }
     }
 

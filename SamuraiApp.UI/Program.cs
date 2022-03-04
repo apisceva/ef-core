@@ -10,12 +10,12 @@ namespace SamuraiApp.UI
     class Program
     {
         private static SamuraiContext _context = new SamuraiContext();
-        private static SamuraiContext _contextNT = new SamuraiContextNoTracking();
+        //private static SamuraiContext _contextNT = new SamuraiContextNoTracking();
         private static void Main(string[] args)
         {
             //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
             //GetSamurais();
-            ////AddVariousTypes();
+            //AddVariousTypes();
             //QueryFilters();
             //QueryAggregates();
             //RetrieveAndUpdateSamurai();
@@ -35,7 +35,11 @@ namespace SamuraiApp.UI
             //LazyLoadQuotes();
             //FiteringWithRelatedData();
             //ModifyingRelatedDataWhenTracked();
-            ModifyingRelatedDataWhenNotTracked();
+            //ModifyingRelatedDataWhenNotTracked();
+            //AddingNewSamuraiToEnExistingBattle();
+            //ReturnBattleWithSamurais();
+            //ReturnAllBattleWithSamurais();
+            AddAllSamuraisToAllBattles();
         }
         private static void AddVariousTypes()
         {
@@ -57,7 +61,7 @@ namespace SamuraiApp.UI
         }
         private static void GetSamurais()
         {
-            var samurais = _contextNT.Samurais
+            var samurais = _context.Samurais
                .TagWith("ConsoleApp.Program.GetSamurais method")
                .ToList();
             Console.WriteLine($"Samurai count is {samurais.Count}");
@@ -71,14 +75,14 @@ namespace SamuraiApp.UI
             //    var name = "Sampson";
             //    var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList();
             var filter = "J%";
-            var samurais = _contextNT.Samurais
+            var samurais = _context.Samurais
                 .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
         }
         private static void QueryAggregates()
         {
             //var name = "Sampson";
             //var samurai = _context.Samurais.FirstOrDefault(s => s.Name == name);
-            var samurai = _contextNT.Samurais.Find(2);
+            var samurai = _context.Samurais.Find(2);
         }
         private static void RetrieveAndUpdateSamurai()
         {
@@ -251,7 +255,7 @@ namespace SamuraiApp.UI
         {
             var samurai = _context.Samurais.Include(s => s.Quotes)
                                   .FirstOrDefault(s => s.Id == 2);
-            samurai.Quotes[0].Text = "Did you hear that?";
+            //samurai.Quotes[0].Text = "Did you hear that?";
             _context.Quotes.Remove(samurai.Quotes[2]);
             _context.SaveChanges();
         }
@@ -266,6 +270,30 @@ namespace SamuraiApp.UI
             //newContext.Quotes.Update(quote);
             newContext.Entry(quote).State = EntityState.Modified;
             newContext.SaveChanges();
+        }
+        private static void AddingNewSamuraiToEnExistingBattle()
+        {
+            var battle = _context.Battles.FirstOrDefault();
+            battle.Samurais.Add(new Samurai { Name = "Takeda Shingen" });
+            _context.SaveChanges();
+        }
+        private static void ReturnBattleWithSamurais()
+        {
+            var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault();
+        }
+        private static void ReturnAllBattleWithSamurais()
+        {
+            var battles = _context.Battles.Include(b => b.Samurais).ToList();
+        }
+        private static void AddAllSamuraisToAllBattles()
+        {
+            var allbattles = _context.Battles.Include(b=>b.Samurais).ToList();
+            var allSamurais = _context.Samurais.ToList();
+            foreach (var battle in allbattles)
+            {
+                battle.Samurais.AddRange(allSamurais);
+            }
+            _context.SaveChanges();
         }
     }
 }

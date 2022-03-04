@@ -33,7 +33,9 @@ namespace SamuraiApp.UI
             //ProjectSamuraisWithQuotes();
             //ExplicitLoadQuotes();
             //LazyLoadQuotes();
-            FiteringWithRelatedData();
+            //FiteringWithRelatedData();
+            //ModifyingRelatedDataWhenTracked();
+            ModifyingRelatedDataWhenNotTracked();
         }
         private static void AddVariousTypes()
         {
@@ -121,7 +123,7 @@ namespace SamuraiApp.UI
                 context2.SaveChanges();
             }
         }
-    
+
         private static void InsertNewSamuraiWithAQuote()
         {
             var samurai = new Samurai
@@ -226,7 +228,7 @@ namespace SamuraiApp.UI
         }
         private static void ExplicitLoadQuotes()
         { //make sure there's a horse in the DB, then clear the context's change tracker
-            _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr. Ed"});
+            _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr. Ed" });
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
             //-----------------------------
@@ -245,6 +247,25 @@ namespace SamuraiApp.UI
                                 .Where(s => s.Quotes.Any(Queryable => Queryable.Text.Contains("happy")))
                                 .ToList();
         }
-    }
+        private static void ModifyingRelatedDataWhenTracked()
+        {
+            var samurai = _context.Samurais.Include(s => s.Quotes)
+                                  .FirstOrDefault(s => s.Id == 2);
+            samurai.Quotes[0].Text = "Did you hear that?";
+            _context.Quotes.Remove(samurai.Quotes[2]);
+            _context.SaveChanges();
+        }
+        private static void ModifyingRelatedDataWhenNotTracked()
+        {
+            var samurai = _context.Samurais.Include(s => s.Quotes)
+                                  .FirstOrDefault(s => s.Id == 2);
+            var quote = samurai.Quotes[0];
+            quote.Text += "Did you hear that again?";
 
+            using var newContext = new SamuraiContext();
+            //newContext.Quotes.Update(quote);
+            newContext.Entry(quote).State = EntityState.Modified;
+            newContext.SaveChanges();
+        }
+    }
 }

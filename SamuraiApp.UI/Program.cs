@@ -30,7 +30,10 @@ namespace SamuraiApp.UI
             //Simpler_AddQuoteToExistingSamuraiNotTracked(2);
             //EagerLoadSamuraiWithQuotes();
             //ProjectSomeProperties();
-            ProjectSamuraisWithQuotes();
+            //ProjectSamuraisWithQuotes();
+            //ExplicitLoadQuotes();
+            //LazyLoadQuotes();
+            FiteringWithRelatedData();
         }
         private static void AddVariousTypes()
         {
@@ -220,6 +223,27 @@ namespace SamuraiApp.UI
                 })
                 .ToList();
             var firstsamurai = samuraisAndQuotes[0].Samurai.Name += "The Happiest";
+        }
+        private static void ExplicitLoadQuotes()
+        { //make sure there's a horse in the DB, then clear the context's change tracker
+            _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr. Ed"});
+            _context.SaveChanges();
+            _context.ChangeTracker.Clear();
+            //-----------------------------
+            var samurai = _context.Samurais.Find(1);
+            _context.Entry(samurai).Collection(s => s.Quotes).Load();
+            _context.Entry(samurai).Reference(s => s.Horse).Load();
+        }
+        private static void LazyLoadQuotes()
+        {
+            var samurai = _context.Samurais.Find(2);
+            var quoteCount = samurai.Quotes.Count(); //won't run without LL setup
+        }
+        private static void FiteringWithRelatedData()
+        {
+            var samurais = _context.Samurais
+                                .Where(s => s.Quotes.Any(Queryable => Queryable.Text.Contains("happy")))
+                                .ToList();
         }
     }
 

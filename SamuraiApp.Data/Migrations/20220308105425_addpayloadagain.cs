@@ -8,7 +8,7 @@ namespace SamuraiApp.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BattleSamurai");
+                name: "SamuraiBattle");
 
             migrationBuilder.CreateTable(
                 name: "XYZSamuraiBattle",
@@ -47,7 +47,7 @@ namespace SamuraiApp.Data.Migrations
                 name: "XYZSamuraiBattle");
 
             migrationBuilder.CreateTable(
-                name: "BattleSamurai",
+                name: "SamuraiBattle",
                 columns: table => new
                 {
                     BattleId = table.Column<int>(type: "int", nullable: false),
@@ -56,15 +56,15 @@ namespace SamuraiApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BattleSamurai", x => new { x.BattleId, x.SamuraiId });
+                    table.PrimaryKey("PK_SamuraiBattle", x => new { x.BattleId, x.SamuraiId });
                     table.ForeignKey(
-                        name: "FK_BattleSamurai_Battles_BattleId",
+                        name: "FK_SamuraiBattle_Battles_BattleId",
                         column: x => x.BattleId,
                         principalTable: "Battles",
                         principalColumn: "BattleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BattleSamurai_Samurais_SamuraiId",
+                        name: "FK_SamuraiBattle_Samurais_SamuraiId",
                         column: x => x.SamuraiId,
                         principalTable: "Samurais",
                         principalColumn: "Id",

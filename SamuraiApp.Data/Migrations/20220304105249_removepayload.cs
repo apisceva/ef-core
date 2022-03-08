@@ -36,7 +36,7 @@ namespace SamuraiApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BattleSamurai",
+                name: "SamuraiBattle",
                 columns: table => new
                 {
                     BattlesBattleId = table.Column<int>(type: "int", nullable: false),
@@ -44,15 +44,15 @@ namespace SamuraiApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BattleSamurai", x => new { x.BattlesBattleId, x.SamuraisId });
+                    table.PrimaryKey("PK_SamuraiBattle", x => new { x.BattlesBattleId, x.SamuraisId });
                     table.ForeignKey(
-                        name: "FK_BattleSamurai_Battles_BattlesBattleId",
+                        name: "FK_SamuraiBattle_Battles_BattlesBattleId",
                         column: x => x.BattlesBattleId,
                         principalTable: "Battles",
                         principalColumn: "BattleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BattleSamurai_Samurais_SamuraisId",
+                        name: "FK_SamuraiBattle_Samurais_SamuraisId",
                         column: x => x.SamuraisId,
                         principalTable: "Samurais",
                         principalColumn: "Id",
@@ -100,7 +100,7 @@ namespace SamuraiApp.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BattleSamurai_SamuraisId",
+                name: "IX_SamuraiBattle_SamuraisId",
                 table: "BattleSamurai",
                 column: "SamuraisId");
 
@@ -119,7 +119,7 @@ namespace SamuraiApp.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BattleSamurai");
+                name: "SamuraiBattle");
 
             migrationBuilder.DropTable(
                 name: "Horse");

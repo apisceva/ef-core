@@ -10,7 +10,7 @@ using SamuraiApp.Data;
 namespace SamuraiApp.Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
-    [Migration("20220304114504_addpayloadagain")]
+    [Migration("20220308105425_addpayloadagain")]
     partial class addpayloadagain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,7 +98,7 @@ namespace SamuraiApp.Data.Migrations
                     b.ToTable("Samurais");
                 });
 
-            modelBuilder.Entity("SamuraiApp.Domain.XYZBattleSamurai", b =>
+            modelBuilder.Entity("SamuraiApp.Domain.XYZSamuraiBattle", b =>
                 {
                     b.Property<int>("BattleId")
                         .HasColumnType("int");
@@ -115,7 +115,7 @@ namespace SamuraiApp.Data.Migrations
 
                     b.HasIndex("SamuraiId");
 
-                    b.ToTable("XYZBattleSamurai");
+                    b.ToTable("XYZSamuraiBattle");
                 });
 
             modelBuilder.Entity("SamuraiApp.Domain.Horse", b =>
@@ -138,7 +138,7 @@ namespace SamuraiApp.Data.Migrations
                     b.Navigation("Samurai");
                 });
 
-            modelBuilder.Entity("SamuraiApp.Domain.XYZBattleSamurai", b =>
+            modelBuilder.Entity("SamuraiApp.Domain.XYZSamuraiBattle", b =>
                 {
                     b.HasOne("SamuraiApp.Domain.Battle", null)
                         .WithMany()

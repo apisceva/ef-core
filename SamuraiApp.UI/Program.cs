@@ -36,12 +36,12 @@ namespace SamuraiApp.UI
             //FiteringWithRelatedData();
             //ModifyingRelatedDataWhenTracked();
             //ModifyingRelatedDataWhenNotTracked();
-            //AddingNewSamuraiToEnExistingBattle();
+            AddingNewSamuraiToEnExistingBattle();
             //ReturnBattleWithSamurais();
             //ReturnAllBattleWithSamurais();
             //AddAllSamuraisToAllBattles();
             //RemoveSamuraiFromBattle();
-            WillNotRemoveSamuraiFromBattle();
+            //WillNotRemoveSamuraiFromBattle();
         }
         private static void AddVariousTypes()
         {

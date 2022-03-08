@@ -5,7 +5,7 @@ using System;
 
 namespace SamuraiApp.Data
 {
-    public class SamuraiContext: DbContext
+    public class SamuraiContext : DbContext
 
     {
         public DbSet<Samurai> Samurais { get; set; }
@@ -15,23 +15,25 @@ namespace SamuraiApp.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData",
-                options=>options.MaxBatchSize(100))
+                options => options.MaxBatchSize(100))
             //.LogTo(message => Debug.WriteLine(message))
-            .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name, 
-                                              DbLoggerCategory.Database.Transaction.Name }, 
+            .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name,
+                                              DbLoggerCategory.Database.Transaction.Name },
                                 LogLevel.Debug)
             .EnableSensitiveDataLogging();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Samurai>()
-            //    .HasMany(s => s.Battles)
-            //    .WithMany(b => b.Samurais)
-            //    .UsingEntity<BattleSamurai>
-            //    (bs => bs.HasOne<Battle>().WithMany(),
-            //     bs => bs.HasOne<Samurai>().WithMany())
-            //    .Property(bs => bs.DateJoined)
-            //    .HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Samurai>()
+                .HasMany(s => s.Battles)
+                .WithMany(b => b.Samurais)
+                .UsingEntity<SamuraiBattle>
+                (bs => bs.HasOne<Battle>().WithMany(),
+                 bs => bs.HasOne<Samurai>().WithMany())
+                .Property(bs => bs.DateJoined)
+                .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<SamuraiBattle>().ToTable("SamuraiBattle");
 
         }
     }

@@ -47,8 +47,9 @@ namespace SamuraiApp.UI
             //AddNewHorseToSamuraiUsingId();
             //AddNewHorseToSamuraiObject();
             //AddNewHorseToDisconnectedSamuraiObject();
-            ReplaceAHorse();
-
+            //ReplaceAHorse();
+            //GetSamuraiWithHorse();
+            GetHorseWithSamurai();
         }
         private static void AddVariousTypes()
         {
@@ -368,6 +369,21 @@ namespace SamuraiApp.UI
             horse.SamuraiId = 5; //owns Trigger!
             _context.SaveChanges();
         }
+        private static void GetSamuraiWithHorse()
+        {
+            var samurais = _context.Samurais.Include(s => s.Horse).ToList();
+        }
+        private static void GetHorseWithSamurai()
+        {
+            //var horseonly = _context.Set<Horse>().Find(3);
+            //var horseWithSamurai = _context.Samurais.Include(s => s.Horse)
+            //                               .FirstOrDefault(s => s.Horse.Id == 3);
+            var horseSamuraiPairs = _context.Samurais
+                .Where(s => s.Horse != null)
+                .Select(s => new { Horse = s.Horse, Samurai = s })
+                .ToList();
+        }
+
     }
 }
 

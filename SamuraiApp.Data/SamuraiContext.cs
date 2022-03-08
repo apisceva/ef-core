@@ -33,7 +33,7 @@ namespace SamuraiApp.Data
                 .Property(bs => bs.DateJoined)
                 .HasDefaultValueSql("getdate()");
 
-            modelBuilder.Entity<SamuraiBattle>().ToTable("SamuraiBattle");
+            modelBuilder.Entity<Horse>().ToTable("Horses");
 
         }
     }

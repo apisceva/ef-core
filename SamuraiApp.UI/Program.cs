@@ -42,7 +42,13 @@ namespace SamuraiApp.UI
             //AddAllSamuraisToAllBattles();
             //RemoveSamuraiFromBattle();
             //WillNotRemoveSamuraiFromBattle();
-            RemoveSamuraiFromBattleExplicit();
+            //RemoveSamuraiFromBattleExplicit();
+            //AddNewSamuraiWithHorse();
+            //AddNewHorseToSamuraiUsingId();
+            //AddNewHorseToSamuraiObject();
+            //AddNewHorseToDisconnectedSamuraiObject();
+            ReplaceAHorse();
+
         }
         private static void AddVariousTypes()
         {
@@ -325,6 +331,42 @@ namespace SamuraiApp.UI
                 /*_context.Remove(b_s);*/ //_context.Set<SamuraiBattle>().Remove works, too
                 _context.SaveChanges();
             }
+        }
+        private static void AddNewSamuraiWithHorse()
+        {
+            var samurai = new Samurai { Name = "Jina Ujichika" };
+            samurai.Horse = new Horse { Name = "Silver" };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+        private static void AddNewHorseToSamuraiUsingId()
+        {
+            var horse = new Horse { Name = "Scout", SamuraiId = 2 };
+            _context.Add(horse);
+            _context.SaveChanges();
+        }
+        private static void AddNewHorseToSamuraiObject()
+        {
+            var samurai = _context.Samurais.Find(12);
+            samurai.Horse = new Horse { Name = "Black Beauty" };
+            _context.SaveChanges();
+        }
+        private static void AddNewHorseToDisconnectedSamuraiObject()
+        {
+            var samurai = _context.Samurais.AsNoTracking().FirstOrDefault(s => s.Id == 5);
+            samurai.Horse = new Horse { Name = "Mr. Ed" };
+            using var newContext = new SamuraiContext();
+            newContext.Samurais.Attach(samurai);
+            newContext.SaveChanges();
+        }
+        private static void ReplaceAHorse()
+        {
+            //var samurai = _context.Samurais.Include(s => s.Horse)
+            //                      .FirstOrDefault(s => s.Id == 5);
+            //samurai.Horse = new Horse { Name = "Trigger" };
+            var horse = _context.Set<Horse>().FirstOrDefault(h => h.Name == "Mr. Ed");
+            horse.SamuraiId = 5; //owns Trigger!
+            _context.SaveChanges();
         }
     }
 }

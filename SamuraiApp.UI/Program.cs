@@ -36,12 +36,13 @@ namespace SamuraiApp.UI
             //FiteringWithRelatedData();
             //ModifyingRelatedDataWhenTracked();
             //ModifyingRelatedDataWhenNotTracked();
-            AddingNewSamuraiToEnExistingBattle();
+            //AddingNewSamuraiToEnExistingBattle();
             //ReturnBattleWithSamurais();
             //ReturnAllBattleWithSamurais();
             //AddAllSamuraisToAllBattles();
             //RemoveSamuraiFromBattle();
             //WillNotRemoveSamuraiFromBattle();
+            RemoveSamuraiFromBattleExplicit();
         }
         private static void AddVariousTypes()
         {
@@ -289,7 +290,7 @@ namespace SamuraiApp.UI
         }
         private static void AddAllSamuraisToAllBattles()
         {
-            var allbattles = _context.Battles.Include(b=>b.Samurais).ToList();
+            var allbattles = _context.Battles.Include(b => b.Samurais).ToList();
             var allSamurais = _context.Samurais.ToList();
             foreach (var battle in allbattles)
             {
@@ -301,7 +302,7 @@ namespace SamuraiApp.UI
         {
             var battleWithSamurai = _context.Battles
                 .Include(b => b.Samurais.Where(s => s.Id == 12))
-                .Single(s=>s.BattleId == 1);
+                .Single(s => s.BattleId == 1);
             var samurai = battleWithSamurai.Samurais[0];
             battleWithSamurai.Samurais.Remove(samurai);
             _context.SaveChanges();
@@ -313,5 +314,18 @@ namespace SamuraiApp.UI
             battle.Samurais.Remove(samurai);
             _context.SaveChanges(); //the relationship is not being tracked
         }
+
+        private static void RemoveSamuraiFromBattleExplicit()
+        {
+            var b_s = _context.Set<SamuraiBattle>()
+                .SingleOrDefault(bs => bs.BattleId == 1 && bs.SamuraiId == 10);
+            if (b_s != null)
+            {
+                b_s.DateJoined = DateTime.Now;
+                /*_context.Remove(b_s);*/ //_context.Set<SamuraiBattle>().Remove works, too
+                _context.SaveChanges();
+            }
+        }
     }
 }
+

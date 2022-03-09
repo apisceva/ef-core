@@ -84,9 +84,9 @@ namespace SamuraiApp.UI
         {
             //    var name = "Sampson";
             //    var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList();
-            var filter = "J%";
-            var samurais = _context.Samurais
-                .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
+            //var filter = "J%";
+            //var samurais = _context.Samurais
+            //    .Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
         }
         private static void QueryAggregates()
         {

@@ -2,7 +2,7 @@
 
 namespace SamuraiApp.Data.Migrations
 {
-    public partial class SamuraiBattleStats : Migration
+    public partial class SamuraiBattleStat : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace SamuraiApp.Data.Migrations
                   SELECT TOP 1 @ret = Name
                   FROM Battles
                   WHERE Battles.BattleId IN(SELECT BattleId
-                                     FROM BattleSamurai
+                                     FROM SamuraiBattle
                                     WHERE SamuraiId = @samuraiId)
                   ORDER BY StartDate
                   RETURN @ret

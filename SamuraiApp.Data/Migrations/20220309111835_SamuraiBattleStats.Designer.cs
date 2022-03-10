@@ -11,7 +11,7 @@ namespace SamuraiApp.Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
     [Migration("20220309111835_SamuraiBattleStats")]
-    partial class SamuraiBattleStats
+    partial class SamuraiBattleStat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

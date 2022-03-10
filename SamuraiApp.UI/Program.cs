@@ -50,7 +50,11 @@ namespace SamuraiApp.UI
             //ReplaceAHorse();
             //GetSamuraiWithHorse();
             //GetHorseWithSamurai();
-            QuerySamuraiBattleStats();
+            //QuerySamuraiBattleStats();
+            //QueryUsingRawSql();
+            //QueryRelatedUsingRawSql();
+            //QueryUsingRawSqlWithInterpolation();
+            DANGERQueryUsingRawSqlWithInterpolation();
         }
         private static void AddVariousTypes()
         {
@@ -387,10 +391,35 @@ namespace SamuraiApp.UI
         private static void QuerySamuraiBattleStats()
         {
             //var stats = _context.SamuraiBattleStats.ToList();
-            var firststat = _context.SamuraiBattleStats.FirstOrDefault();
-            var sampsonState = _context.SamuraiBattleStats
-                .FirstOrDefault(b => b.Name == "SampsonSan");
+            //var firststat = _context.SamuraiBattleStats.FirstOrDefault();
+            //var sampsonState = _context.SamuraiBattleStats
+            //    .FirstOrDefault(b => b.Name == "SampsonSan");
+            var finone = _context.SamuraiBattleStats.Find(2);
         }
+        private static void QueryUsingRawSql()
+        {
+            var samurais = _context.Samurais.FromSqlRaw("Select * from samurais").ToList();
+        }
+        private static void QueryRelatedUsingRawSql()
+        {
+            var samurais = _context.Samurais.FromSqlRaw(
+                "Select Id, Name from Samurais").Include(s => s.Quotes).ToList();
+        }
+        private static void QueryUsingRawSqlWithInterpolation()
+        {
+            string name = "Kikuchyo";
+            var samurais = _context.Samurais
+                .FromSqlInterpolated($"Select * from Samurais Where Name= {name}")
+                .ToList();
+        }
+        private static void DANGERQueryUsingRawSqlWithInterpolation()
+        {
+            string name = "Kikuchyo";
+            var samurais = _context.Samurais
+                .FromSqlRaw($"Select * from Samurais Where Name= '{name}'")
+                .ToList();
+        }
+
 
     }
 }

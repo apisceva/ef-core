@@ -54,7 +54,9 @@ namespace SamuraiApp.UI
             //QueryUsingRawSql();
             //QueryRelatedUsingRawSql();
             //QueryUsingRawSqlWithInterpolation();
-            DANGERQueryUsingRawSqlWithInterpolation();
+            //DANGERQueryUsingRawSqlWithInterpolation();
+            //QueryUsingSqlRawStoredProc();
+            QueryUsingFromSqlIntStoredProc();
         }
         private static void AddVariousTypes()
         {
@@ -418,6 +420,18 @@ namespace SamuraiApp.UI
             var samurais = _context.Samurais
                 .FromSqlRaw($"Select * from Samurais Where Name= '{name}'")
                 .ToList();
+        }
+        private static void QueryUsingSqlRawStoredProc()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlRaw(
+                "EXEC dbo.SamuraisWhoSaidAWord {0}", text).ToList();
+        }
+        private static void QueryUsingFromSqlIntStoredProc()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlInterpolated(
+                $"EXEC dbo.SamuraisWhoSaidAWord {text}").ToList();
         }
 
 

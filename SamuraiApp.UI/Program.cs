@@ -49,7 +49,8 @@ namespace SamuraiApp.UI
             //AddNewHorseToDisconnectedSamuraiObject();
             //ReplaceAHorse();
             //GetSamuraiWithHorse();
-            GetHorseWithSamurai();
+            //GetHorseWithSamurai();
+            QuerySamuraiBattleStats();
         }
         private static void AddVariousTypes()
         {
@@ -382,6 +383,13 @@ namespace SamuraiApp.UI
                 .Where(s => s.Horse != null)
                 .Select(s => new { Horse = s.Horse, Samurai = s })
                 .ToList();
+        }
+        private static void QuerySamuraiBattleStats()
+        {
+            //var stats = _context.SamuraiBattleStats.ToList();
+            var firststat = _context.SamuraiBattleStats.FirstOrDefault();
+            var sampsonState = _context.SamuraiBattleStats
+                .FirstOrDefault(b => b.Name == "SampsonSan");
         }
 
     }

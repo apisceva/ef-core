@@ -1,17 +1,15 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
-using System.Diagnostics;
-using Xunit;
 
-
-namespace SamuraiApp.Test
+namespace SamuraiApp.Tests
 {
+    [TestClass]
     public class DatabaseTests
     {
-        [Fact]
         public void CanInsertSamuraiIntoDatabase()
         {
-            using (var context=new SamuraiContext())
+            using (var context = new SamuraiContext())
             {
                 //context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -21,9 +19,10 @@ namespace SamuraiApp.Test
                 context.SaveChanges();
                 //Debug.WriteLine($"After save: {samurai.Id}");
 
-                Assert.NotEqual(0, samurai.Id);
+                Assert.AreNotEqual(0, samurai.Id);
 
             }
         }
     }
 }
+    

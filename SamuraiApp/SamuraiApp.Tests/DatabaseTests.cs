@@ -7,6 +7,7 @@ namespace SamuraiApp.Tests
     [TestClass]
     public class DatabaseTests
     {
+        [TestMethod]
         public void CanInsertSamuraiIntoDatabase()
         {
             using (var context = new SamuraiContext())

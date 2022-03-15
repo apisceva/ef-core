@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System.Diagnostics;
@@ -8,19 +9,20 @@ namespace SamuraiApp.Tests
     [TestClass]
     public class InMemoryTests
     {
+        [TestMethod]
         public void CanInsertSamuraiIntoDatabase()
         {
-            using (var context = new SamuraiContext())
+            //var contextOptions = new DbContextOptionsBuilder<SamuraiContext>()
+            //    .(@"Server=(localdb)\mssqllocaldb;Database=Test")
+            //    .Options;
+            var builder = new DbContextOptionsBuilder();
+            builder.UseInMemoryDatabase("CanInsertSamurai");
+            using (var context = new SamuraiContext(builder.Options))// contextOptions))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
                 var samurai = new Samurai();
                 context.Samurais.Add(samurai);
-                Debug.WriteLine($"Before save: {samurai.Id}");
-                context.SaveChanges();
-                Debug.WriteLine($"After save: {samurai.Id}");
-
-                Assert.AreNotEqual(0, samurai.Id);
+                Assert.AreEqual(EntityState.Added,
+                    context.Entry(samurai).State);
 
             }
         }

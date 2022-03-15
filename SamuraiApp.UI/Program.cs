@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace SamuraiApp.UI
 {
-    class Program
+    internal class Program
     {
         private static SamuraiContext _context = new SamuraiContext();
         //private static SamuraiContext _contextNT = new SamuraiContextNoTracking();
         private static void Main(string[] args)
         {
-            //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
+            AddSamuraisByName("Shimada", "Okamoto", "Kikuchio", "Hayashida");
             //GetSamurais();
             //AddVariousTypes();
             //QueryFilters();
@@ -57,7 +57,7 @@ namespace SamuraiApp.UI
             //DANGERQueryUsingRawSqlWithInterpolation();
             //QueryUsingSqlRawStoredProc();
             //QueryUsingFromSqlIntStoredProc();
-            ExecuteSomeRawSql();
+            //ExecuteSomeRawSql();
         }
         private static void AddVariousTypes()
         {
@@ -69,14 +69,17 @@ namespace SamuraiApp.UI
         }
 
         private static void AddSamuraisByName(params string[] names)
-        {
-            foreach (string name in names)
-            {
-                _context.Samurais.Add(new Samurai { Name = name });
+        { 
+        //foreach (string name in names)
+        //{
+        //    _context.Samurais.Add(new Samurai { Name = name });
 
-            }
-            _context.SaveChanges();
-        }
+        //}
+        //_context.SaveChanges();
+
+        var _bizData = new BusinessDataLogic();
+        var newSamuraisCreatedCount = _bizData.AddSamuraisByName(names);
+    }
         private static void GetSamurais()
         {
             var samurais = _context.Samurais

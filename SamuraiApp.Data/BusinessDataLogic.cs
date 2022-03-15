@@ -1,4 +1,5 @@
-﻿using SamuraiApp.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using SamuraiApp.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,20 @@ namespace SamuraiApp.Data
             }
             var dbResult=_context.SaveChanges();
             return dbResult;
+        }
+        public int InsertNewSamurai(Samurai samurai)
+        {
+            _context.Samurais.Add(samurai);
+            var dbResult = _context.SaveChanges();
+            return dbResult;
+        }
+        public Samurai GetSamuraiWithQuotes(int samuraiId)
+        {
+            var samuraiWithQuotes = _context.Samurais.Where(s => s.Id == samuraiId)
+                                                     .Include(s => s.Quotes)
+                                                     .FirstOrDefault();
+
+            return samuraiWithQuotes;
         }
     }
 }
